@@ -132,6 +132,17 @@ header p {
     </div>
 </header>
 
+    <nav id="categoryNav" class="bg-white py-3 shadow-md sticky top-0 z-40">
+    <div class="container mx-auto px-6 flex justify-center space-x-2 sm:space-x-4">
+        <button data-category="Breakfast" class="nav-button text-gray-600 hover:text-green-700 hover:bg-green-50 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50 font-medium px-3 py-2 sm:px-4 rounded-lg text-sm sm:text-base transition-colors duration-150">
+            🍳 Breakfast
+        </button>
+        <button data-category="Dinner" class="nav-button text-gray-600 hover:text-green-700 hover:bg-green-50 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50 font-medium px-3 py-2 sm:px-4 rounded-lg text-sm sm:text-base transition-colors duration-150">
+            🍲 Dinner
+        </button>
+        </div>
+</nav>
+
     <main class="container mx-auto p-4 md:p-8">
         <div id="homepageView">
             <div id="recipeCategoriesContainer">
@@ -356,6 +367,7 @@ header p {
                     const recipes = categories[categoryName];
                     const categorySection = document.createElement('div');
                     categorySection.className = 'mb-12'; 
+                    categorySection.id = `category-${categoryName.toLowerCase().replace(/\s+/g, '-')}`; // Adds an ID like "category-breakfast"
 
                     const title = document.createElement('h2');
                     title.className = 'category-title';
@@ -378,6 +390,7 @@ header p {
                     const recipes = categories[categoryName];
                     const categorySection = document.createElement('div');
                     categorySection.className = 'mb-12';
+                    categorySection.id = `category-${categoryName.toLowerCase().replace(/\s+/g, '-')}`; // Adds an ID like "category-breakfast"
 
                     const title = document.createElement('h2');
                     title.className = 'category-title';
@@ -484,6 +497,37 @@ header p {
                 currentYearSpan.textContent = new Date().getFullYear();
             }
         });
+        // --- NAVIGATION BUTTONS LOGIC ---
+const navButtons = document.querySelectorAll('#categoryNav .nav-button');
+const categoryNavElement = document.getElementById('categoryNav');
+
+navButtons.forEach(button => {
+    button.addEventListener('click', () => {
+        const categoryName = button.dataset.category;
+        const categoryId = `category-${categoryName.toLowerCase().replace(/\s+/g, '-')}`;
+        const targetSection = document.getElementById(categoryId);
+
+        if (targetSection) {
+            let navBarHeight = 0;
+            if (categoryNavElement && getComputedStyle(categoryNavElement).position === 'sticky') {
+                navBarHeight = categoryNavElement.offsetHeight;
+            }
+            
+            const targetPosition = targetSection.getBoundingClientRect().top + window.pageYOffset - navBarHeight - 20; // 20px for extra spacing
+
+            window.scrollTo({
+                top: targetPosition,
+                behavior: 'smooth'
+            });
+
+            // Optional: Remove 'active' class from all buttons and add to clicked one
+            navButtons.forEach(btn => btn.classList.remove('text-green-700', 'bg-green-100'));
+            button.classList.add('text-green-700', 'bg-green-100');
+        } else {
+            console.warn(`Target section with ID "${categoryId}" not found.`);
+        }
+    });
+});
     </script>
 </body>
 </html>
