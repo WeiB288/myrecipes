@@ -127,8 +127,8 @@
                 placeholderImage: "https://placehold.co/600x400/f87171/ffffff?text=Miso+Salmon",
                 description: "Fresh, bold flavors with a beautiful glaze that caramelizes wonderfully.",
                 yields: "2-4 servings",
-                prepTime: "10 minutes",
-                cookTime: "12-18 minutes",
+                prepTime: "10 min", // Updated
+                cookTime: "12-18 min", // Updated
                 ingredients: [
                     { item: "Salmon fillets (150-200g each)", quantity: "300-800g total" },
                     { item: "White or yellow miso paste", quantity: "60g" },
@@ -167,8 +167,8 @@
                 placeholderImage: "https://placehold.co/600x400/60a5fa/ffffff?text=White+Fish",
                 description: "A restaurant-quality dish, fresh, fast, and full of Mediterranean sunshine.",
                 yields: "2-4 servings",
-                prepTime: "15 minutes",
-                cookTime: "20-25 minutes",
+                prepTime: "15 min", // Updated
+                cookTime: "20-25 min", // Updated
                 ingredients: [
                     { item: "Firm white fish fillets (cod, halibut), 2.5cm thick", quantity: "450-680g" },
                     { item: "Olive oil", quantity: "30ml (2 tbsp)" },
@@ -204,8 +204,8 @@
                 placeholderImage: "https://placehold.co/600x400/34d399/ffffff?text=Beef+Stir-fry",
                 description: "A vibrant, fresh, and flavorful Mediterranean stir-fry.",
                 yields: "2-4 servings",
-                prepTime: "20 minutes",
-                cookTime: "20-25 minutes",
+                prepTime: "20 min", // Updated
+                cookTime: "20-25 min", // Updated
                 ingredients: [
                     { item: "Lean Ground Beef", quantity: "450g" },
                     { item: "Olive Oil", quantity: "30ml (2 tbsp)" },
@@ -242,12 +242,12 @@
                 id: "pb-overnight-oats",
                 name: "Peanut Butter Overnight Oats",
                 category: "Breakfast",
-                image: "Peanut Butter Overnight Oats.jpg", // Replace with actual image if you have one
+                image: "peanut-butter-overnight-oats.jpg", 
                 placeholderImage: "https://placehold.co/600x400/f59e0b/ffffff?text=Overnight+Oats",
                 description: "A quick, easy, and delicious make-ahead breakfast.",
                 yields: "3 servings",
-                prepTime: "10-15 minutes",
-                cookTime: "At least 6 hours (chill time)",
+                prepTime: "10-15 min", // Updated
+                cookTime: "6+ hr chill", // Updated to be concise and remove brackets
                 ingredients: [
                     { item: "Unsweetened almond milk (or other)", quantity: "1 1/2 cups" },
                     { item: "Chia seeds", quantity: "2 1/4 Tbsp" },
@@ -282,15 +282,16 @@
         // Function to create a recipe card
         function createRecipeCard(recipe) {
             const card = document.createElement('div');
-            card.className = 'recipe-card bg-white rounded-xl shadow-lg overflow-hidden cursor-pointer'; // Removed flex flex-col as it's handled by parent grid
+            card.className = 'recipe-card bg-white rounded-xl shadow-lg overflow-hidden cursor-pointer';
+            // Updated the prep and cook time display
             card.innerHTML = `
                 <img src="${recipe.image}" alt="${recipe.name}" class="w-full h-56 object-cover" onerror="this.onerror=null;this.src='${recipe.placeholderImage}';">
-                <div class="p-6 recipe-card-content"> {/* Added recipe-card-content for flex grow */}
+                <div class="p-6 recipe-card-content">
                     <h3 class="text-2xl font-semibold text-green-700 mb-2">${recipe.name}</h3>
-                    <p class="text-gray-600 text-sm mb-4 recipe-card-description">${recipe.description}</p> {/* Added recipe-card-description */}
+                    <p class="text-gray-600 text-sm mb-4 recipe-card-description">${recipe.description}</p>
                     <div class="mt-auto">
-                         <span class="inline-block bg-gray-100 text-gray-700 text-xs font-semibold px-2.5 py-0.5 rounded-full mr-2 mb-2">${recipe.prepTime} Prep</span>
-                         <span class="inline-block bg-lime-100 text-lime-700 text-xs font-semibold px-2.5 py-0.5 rounded-full mb-2">${recipe.cookTime} Cook</span>
+                         <span class="inline-block bg-gray-100 text-gray-700 text-xs font-semibold px-2.5 py-0.5 rounded-full mr-2 mb-1 sm:mb-2">Prep: ${recipe.prepTime}</span>
+                         <span class="inline-block bg-lime-100 text-lime-700 text-xs font-semibold px-2.5 py-0.5 rounded-full mb-1 sm:mb-2">Cook: ${recipe.cookTime}</span>
                     </div>
                 </div>
             `;
@@ -300,7 +301,7 @@
 
         // Function to render recipes grouped by category
         function renderRecipesByCategory() {
-            recipeCategoriesContainer.innerHTML = ''; // Clear existing content
+            recipeCategoriesContainer.innerHTML = ''; 
 
             const categories = {};
             recipeData.forEach(recipe => {
@@ -310,14 +311,13 @@
                 categories[recipe.category].push(recipe);
             });
 
-            // Define a preferred order for categories
-            const categoryOrder = ["Breakfast", "Dinner"]; // Add other categories here in desired order
+            const categoryOrder = ["Breakfast", "Dinner"]; 
 
             for (const categoryName of categoryOrder) {
                 if (categories[categoryName]) {
                     const recipes = categories[categoryName];
                     const categorySection = document.createElement('div');
-                    categorySection.className = 'mb-12'; // Margin below each category section
+                    categorySection.className = 'mb-12'; 
 
                     const title = document.createElement('h2');
                     title.className = 'category-title';
@@ -335,7 +335,6 @@
                     recipeCategoriesContainer.appendChild(categorySection);
                 }
             }
-             // Add any remaining categories not in categoryOrder (optional, for flexibility)
              for (const categoryName in categories) {
                 if (!categoryOrder.includes(categoryName)) {
                     const recipes = categories[categoryName];
@@ -389,11 +388,11 @@
                     </div>
                     <div class="bg-lime-50 p-4 rounded-lg shadow">
                         <p class="text-sm font-medium text-lime-500">PREP TIME</p>
-                        <p class="text-xl font-semibold text-lime-700">${recipe.prepTime}</p>
+                        <p class="text-xl font-semibold text-lime-700">${recipe.prepTime}</p> {/* Will now show updated concise time */}
                     </div>
                     <div class="bg-emerald-50 p-4 rounded-lg shadow">
                         <p class="text-sm font-medium text-emerald-500">COOK TIME</p>
-                        <p class="text-xl font-semibold text-emerald-700">${recipe.cookTime}</p>
+                        <p class="text-xl font-semibold text-emerald-700">${recipe.cookTime}</p> {/* Will now show updated concise time */}
                     </div>
                 </div>
 
@@ -442,7 +441,7 @@
         backButton.addEventListener('click', showHomepage);
 
         document.addEventListener('DOMContentLoaded', () => {
-            renderRecipesByCategory(); // Changed from renderRecipeGrid
+            renderRecipesByCategory();
             if(currentYearSpan) {
                 currentYearSpan.textContent = new Date().getFullYear();
             }
