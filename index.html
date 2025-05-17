@@ -137,6 +137,9 @@ header p {
         <button data-category="Breakfast" class="nav-button text-gray-600 hover:text-green-700 hover:bg-green-50 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50 font-medium px-3 py-2 sm:px-4 rounded-lg text-sm sm:text-base transition-colors duration-150">
             🍳 Breakfast
         </button>
+        <button data-category="Salads" class="nav-button text-gray-600 hover:text-green-700 hover:bg-green-50 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50 font-medium px-3 py-2 sm:px-4 rounded-lg text-sm sm:text-base transition-colors duration-150">
+        🥗 Salads
+        </button>
         <button data-category="Dinner" class="nav-button text-gray-600 hover:text-green-700 hover:bg-green-50 focus:outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50 font-medium px-3 py-2 sm:px-4 rounded-lg text-sm sm:text-base transition-colors duration-150">
             🍲 Dinner
         </button>
@@ -348,6 +351,51 @@ header p {
         "Using milk in the morning makes the oatmeal creamier.",
         "Adjust simmer time in the morning to reach your preferred oatmeal thickness."
     ]
+},
+            {
+    id: "asian-slaw",
+    name: "Asian Slaw with Ginger-Peanut Dressing",
+    category: "Salads",
+    image: "asian-slaw.jpg", // Replace with an actual image filename if you have one
+    placeholderImage: "https://placehold.co/600x400/a7f3d0/ffffff?text=Asian+Slaw", // Light green placeholder
+    description: "A flavorful and crunchy slaw with a delicious homemade ginger-peanut dressing.",
+    yields: "Approx. 6-8 servings", // Based on typical slaw recipe size
+    prepTime: "20 min",    // For chopping and dressing
+    cookTime: "10+ min (sit time)", // For flavors to meld
+    ingredients: [
+        { item: "<strong>For the Dressing:</strong>", quantity: "" },
+        { item: "Honey", quantity: "¼ cup" },
+        { item: "Vegetable oil", quantity: "¼ cup" },
+        { item: "Unseasoned rice vinegar", quantity: "¼ cup" },
+        { item: "Soy sauce", quantity: "1 tablespoon" },
+        { item: "Sesame oil", quantity: "1 teaspoon" },
+        { item: "Peanut butter", quantity: "1 tablespoon" },
+        { item: "Salt", quantity: "Heaping ½ teaspoon" },
+        { item: "Sriracha sauce (optional)", quantity: "1 teaspoon" },
+        { item: "Minced fresh ginger", quantity: "1 tablespoon" },
+        { item: "Large garlic clove, minced", quantity: "1" },
+        { item: "<strong>For the Slaw:</strong>", quantity: "" },
+        { item: "Prepared shredded coleslaw mix", quantity: "4 cups" },
+        { item: "Prepared shredded carrots", quantity: "2 cups" },
+        { item: "Red bell pepper, thinly sliced", quantity: "1" },
+        { item: "Cooked and shelled edamame", quantity: "1 cup" },
+        { item: "Medium scallions, finely sliced", quantity: "2" },
+        { item: "Chopped salted peanuts", quantity: "½ cup" },
+        { item: "Loosely packed chopped fresh cilantro", quantity: "½ cup" }
+    ],
+    equipment: ["Medium bowl (for dressing)", "Large mixing bowl (for slaw)", "Whisk"],
+    instructions: [
+        "Make Dressing: In a medium bowl, whisk together all dressing ingredients until peanut butter is dissolved. Set aside.",
+        "Combine Slaw: In a large mixing bowl, combine all slaw ingredients.",
+        "Dress Slaw: Pour dressing over slaw and toss well to coat evenly.",
+        "Let Sit: Allow slaw to sit for at least 10 minutes before serving for flavors to meld.",
+        "Taste & Adjust: Taste and adjust seasoning if necessary (e.g., more salt).",
+        "Serve cold."
+    ],
+    tips: [
+        "Dressing can be made up to 2 days ahead and stored in the fridge.",
+        "Slaw is best served fresh but leftovers keep for a few days refrigerated."
+    ]
 }
         ];
 
@@ -393,7 +441,7 @@ header p {
                 categories[recipe.category].push(recipe);
             });
 
-            const categoryOrder = ["Breakfast", "Dinner"]; 
+            const categoryOrder = ["Breakfast", "Salads", "Dinner"]; 
 
             for (const categoryName of categoryOrder) {
                 if (categories[categoryName]) {
