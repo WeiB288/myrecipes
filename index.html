@@ -840,50 +840,48 @@ header p {
                 currentYearSpan.textContent = new Date().getFullYear();
             }
         });
-// --- NAVIGATION BUTTONS LOGIC (Updated) ---
-const navButtons = document.querySelectorAll('#categoryNav .nav-button');
-const categoryNavElement = document.getElementById('categoryNav');
-const homepageView = document.getElementById('homepageView'); // Ensure homepageView is defined here or accessible globally
+            // Setup Navigation Buttons Logic
+            if (navButtons && navButtons.length > 0) {
+                navButtons.forEach(button => {
+                    button.addEventListener('click', () => {
+                        const categoryName = button.dataset.category;
+                        if (!categoryName) {
+                            console.warn("Button is missing data-category attribute", button);
+                            return;
+                        }
+                        const categoryId = `category-${categoryName.toLowerCase().replace(/\s+/g, '-')}`;
 
-navButtons.forEach(button => {
-    button.addEventListener('click', () => {
-        const categoryName = button.dataset.category;
-        const categoryId = `category-${categoryName.toLowerCase().replace(/\s+/g, '-')}`;
+                        // Ensure homepageView is defined and accessible
+                        if (homepageView && homepageView.classList.contains('hidden')) {
+                            showHomepage(); 
+                        }
 
-        // 1. Ensure homepage is visible
-        //    The showHomepage() function should already handle making homepageView visible 
-        //    and hiding recipeDetailView.
-        if (homepageView.classList.contains('hidden')) {
-            showHomepage(); // This function should make homepageView active
-        }
+                        requestAnimationFrame(() => {
+                            const targetSection = document.getElementById(categoryId);
 
-        // 2. Use requestAnimationFrame to wait for the DOM to update after view switch
-        requestAnimationFrame(() => {
-            const targetSection = document.getElementById(categoryId);
+                            if (targetSection) {
+                                let navBarHeight = 0;
+                                if (categoryNavElement && getComputedStyle(categoryNavElement).position === 'sticky') {
+                                    navBarHeight = categoryNavElement.offsetHeight;
+                                }
+                                
+                                const targetPosition = targetSection.getBoundingClientRect().top + window.pageYOffset - navBarHeight - 20; 
 
-            if (targetSection) {
-                let navBarHeight = 0;
-                // Check if categoryNavElement exists and is sticky
-                if (categoryNavElement && getComputedStyle(categoryNavElement).position === 'sticky') {
-                    navBarHeight = categoryNavElement.offsetHeight;
-                }
-                
-                // Calculate the target position
-                const targetPosition = targetSection.getBoundingClientRect().top + window.pageYOffset - navBarHeight - 20; // 20px for extra spacing below nav
+                                window.scrollTo({
+                                    top: targetPosition,
+                                    behavior: 'smooth'
+                                });
 
-                window.scrollTo({
-                    top: targetPosition,
-                    behavior: 'smooth'
+                                navButtons.forEach(btn => btn.classList.remove('active-nav', 'text-green-700', 'bg-green-100', 'font-semibold'));
+                                button.classList.add('active-nav', 'text-green-700', 'bg-green-100', 'font-semibold');
+                            } else {
+                                console.warn(`Target section with ID "${categoryId}" not found after attempting to switch to homepage. Check if the category exists and has recipes.`);
+                            }
+                        });
+                    });
                 });
-
-                // Optional: Style active button
-                navButtons.forEach(btn => btn.classList.remove('text-green-700', 'bg-green-100', 'font-semibold'));
-                button.classList.add('text-green-700', 'bg-green-100', 'font-semibold');
-            } else {
-                console.warn(`Target section with ID "${categoryId}" not found after attempting to switch to homepage.`);
             }
         });
-    });
     </script>
 </body>
 </html>
