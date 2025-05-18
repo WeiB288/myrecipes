@@ -840,35 +840,49 @@ header p {
                 currentYearSpan.textContent = new Date().getFullYear();
             }
         });
-        // --- NAVIGATION BUTTONS LOGIC ---
+// --- NAVIGATION BUTTONS LOGIC (Updated) ---
 const navButtons = document.querySelectorAll('#categoryNav .nav-button');
 const categoryNavElement = document.getElementById('categoryNav');
+const homepageView = document.getElementById('homepageView'); // Ensure homepageView is defined here or accessible globally
 
 navButtons.forEach(button => {
     button.addEventListener('click', () => {
         const categoryName = button.dataset.category;
         const categoryId = `category-${categoryName.toLowerCase().replace(/\s+/g, '-')}`;
-        const targetSection = document.getElementById(categoryId);
 
-        if (targetSection) {
-            let navBarHeight = 0;
-            if (categoryNavElement && getComputedStyle(categoryNavElement).position === 'sticky') {
-                navBarHeight = categoryNavElement.offsetHeight;
-            }
-            
-            const targetPosition = targetSection.getBoundingClientRect().top + window.pageYOffset - navBarHeight - 20; // 20px for extra spacing
-
-            window.scrollTo({
-                top: targetPosition,
-                behavior: 'smooth'
-            });
-
-            // Optional: Remove 'active' class from all buttons and add to clicked one
-            navButtons.forEach(btn => btn.classList.remove('text-green-700', 'bg-green-100'));
-            button.classList.add('text-green-700', 'bg-green-100');
-        } else {
-            console.warn(`Target section with ID "${categoryId}" not found.`);
+        // 1. Ensure homepage is visible
+        //    The showHomepage() function should already handle making homepageView visible 
+        //    and hiding recipeDetailView.
+        if (homepageView.classList.contains('hidden')) {
+            showHomepage(); // This function should make homepageView active
         }
+
+        // 2. Use requestAnimationFrame to wait for the DOM to update after view switch
+        requestAnimationFrame(() => {
+            const targetSection = document.getElementById(categoryId);
+
+            if (targetSection) {
+                let navBarHeight = 0;
+                // Check if categoryNavElement exists and is sticky
+                if (categoryNavElement && getComputedStyle(categoryNavElement).position === 'sticky') {
+                    navBarHeight = categoryNavElement.offsetHeight;
+                }
+                
+                // Calculate the target position
+                const targetPosition = targetSection.getBoundingClientRect().top + window.pageYOffset - navBarHeight - 20; // 20px for extra spacing below nav
+
+                window.scrollTo({
+                    top: targetPosition,
+                    behavior: 'smooth'
+                });
+
+                // Optional: Style active button
+                navButtons.forEach(btn => btn.classList.remove('text-green-700', 'bg-green-100', 'font-semibold'));
+                button.classList.add('text-green-700', 'bg-green-100', 'font-semibold');
+            } else {
+                console.warn(`Target section with ID "${categoryId}" not found after attempting to switch to homepage.`);
+            }
+        });
     });
 });
     </script>
