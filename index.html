@@ -840,48 +840,37 @@ header p {
                 currentYearSpan.textContent = new Date().getFullYear();
             }
         });
-            // Setup Navigation Buttons Logic
-            if (navButtons && navButtons.length > 0) {
-                navButtons.forEach(button => {
-                    button.addEventListener('click', () => {
-                        const categoryName = button.dataset.category;
-                        if (!categoryName) {
-                            console.warn("Button is missing data-category attribute", button);
-                            return;
-                        }
-                        const categoryId = `category-${categoryName.toLowerCase().replace(/\s+/g, '-')}`;
+// --- NAVIGATION BUTTONS LOGIC ---
+const navButtons = document.querySelectorAll('#categoryNav .nav-button');
+const categoryNavElement = document.getElementById('categoryNav');
 
-                        // Ensure homepageView is defined and accessible
-                        if (homepageView && homepageView.classList.contains('hidden')) {
-                            showHomepage(); 
-                        }
+navButtons.forEach(button => {
+    button.addEventListener('click', () => {
+        const categoryName = button.dataset.category;
+        const categoryId = `category-${categoryName.toLowerCase().replace(/\s+/g, '-')}`;
+        const targetSection = document.getElementById(categoryId);
 
-                        requestAnimationFrame(() => {
-                            const targetSection = document.getElementById(categoryId);
-
-                            if (targetSection) {
-                                let navBarHeight = 0;
-                                if (categoryNavElement && getComputedStyle(categoryNavElement).position === 'sticky') {
-                                    navBarHeight = categoryNavElement.offsetHeight;
-                                }
-                                
-                                const targetPosition = targetSection.getBoundingClientRect().top + window.pageYOffset - navBarHeight - 20; 
-
-                                window.scrollTo({
-                                    top: targetPosition,
-                                    behavior: 'smooth'
-                                });
-
-                                navButtons.forEach(btn => btn.classList.remove('active-nav', 'text-green-700', 'bg-green-100', 'font-semibold'));
-                                button.classList.add('active-nav', 'text-green-700', 'bg-green-100', 'font-semibold');
-                            } else {
-                                console.warn(`Target section with ID "${categoryId}" not found after attempting to switch to homepage. Check if the category exists and has recipes.`);
-                            }
-                        });
-                    });
-                });
+        if (targetSection) {
+            let navBarHeight = 0;
+            if (categoryNavElement && getComputedStyle(categoryNavElement).position === 'sticky') {
+                navBarHeight = categoryNavElement.offsetHeight;
             }
-        });
+            
+            const targetPosition = targetSection.getBoundingClientRect().top + window.pageYOffset - navBarHeight - 20; // 20px for extra spacing
+
+            window.scrollTo({
+                top: targetPosition,
+                behavior: 'smooth'
+            });
+
+            // Optional: Remove 'active' class from all buttons and add to clicked one
+            navButtons.forEach(btn => btn.classList.remove('text-green-700', 'bg-green-100'));
+            button.classList.add('text-green-700', 'bg-green-100');
+        } else {
+            console.warn(`Target section with ID "${categoryId}" not found.`);
+        }
+    });
+});
     </script>
 </body>
 </html>
