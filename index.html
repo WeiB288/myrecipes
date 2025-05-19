@@ -831,17 +831,34 @@ header p {
                 return;
             }
 
-            const createChecklistItems = (items, type, recipeIdPrefix) => {
-                if (!Array.isArray(items)) return ''; 
-                return items.map((item, index) => `
-                    <li class="mb-2 flex items-start">
-                        <input type="checkbox" id="${recipeIdPrefix}-${type}-${index}" class="custom-checkbox opacity-0 absolute h-6 w-6 cursor-pointer mt-1" />
-                        <label for="${recipeIdPrefix}-${type}-${index}" class="text-gray-700 select-none cursor-pointer flex-1 relative pl-8">
-                            ${typeof item === 'object' && item.item ? `<strong>${item.item}:</strong> ${item.quantity}` : (typeof item === 'string' ? item : '')}
-                        </label>
-                    </li>
-                `).join('');
-            };
+            // Function to create checklist items for ingredients or instructions
+function createChecklistItems(items, type, recipeIdPrefix) {
+    if (!Array.isArray(items)) return ''; // Handle cases where items might not be an array
+    
+    return items.map((itemObj, index) => {
+        // Check if the item is a header (for ingredients list)
+        if (type === 'ingredient' && itemObj.isHeader) {
+            // Render as a header: bold, no checkbox, slightly more margin
+            return `<li class="mt-3 mb-1 font-semibold text-gray-800 text-md">${itemObj.item}</li>`;
+        } else {
+            // Render as a regular checklist item (ingredient or instruction)
+            const itemId = `${recipeIdPrefix}-${type}-${index}`;
+            // Determine the display text: if it's an object with item/quantity, format it, otherwise use the string directly.
+            const displayText = (typeof itemObj === 'object' && itemObj.item) 
+                                ? `<strong>${itemObj.item}:</strong> ${itemObj.quantity || ''}` 
+                                : (typeof itemObj === 'string' ? itemObj : '');
+
+            return `
+                <li class="mb-2 flex items-start">
+                    <input type="checkbox" id="${itemId}" class="custom-checkbox opacity-0 absolute h-6 w-6 cursor-pointer mt-1" />
+                    <label for="${itemId}" class="text-gray-700 select-none cursor-pointer flex-1 relative pl-8">
+                        ${displayText}
+                    </label>
+                </li>
+            `;
+        }
+    }).join('');
+}
             
             recipeDetailContent.innerHTML = `
                 <img src="${recipe.image}" alt="${recipe.name}" class="w-full h-64 md:h-80 object-cover rounded-lg mb-6 shadow-md" onerror="this.onerror=null;this.src='${recipe.placeholderImage}';">
